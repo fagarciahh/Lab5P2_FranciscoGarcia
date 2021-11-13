@@ -2,23 +2,32 @@ package lab5p2_franciscogarcia;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class LogIn extends javax.swing.JFrame {
 
     public static Registro r = new Registro();
     public static Random rd = new Random();
+    public static Admin a = new Admin();
+    public static Seller s = new Seller();
+    public static Costumer cos = new Costumer();
     
-    public LogIn() throws Exception {
-        usuarios.add(new Administrador("Francisco","fagarcia","123",19));
-        
-        usuarios.add(new Comprador(rd.nextInt(700)+100, new CuentaBancaria(12345,rd.nextInt(8000)+2000),"Zelda","James","james1","123",19));
-        usuarios.add(new Comprador(rd.nextInt(700)+100, new CuentaBancaria(12222,rd.nextInt(8000)+2000),"Hulk","Ashley","bubblebob","123",19));
-        
-        usuarios.add(new Vendedor(5,"Arcane",0,new CuentaBancaria(12390,rd.nextInt(8000)+2000),"Pino","Roble","123",19));
-        usuarios.add(new Vendedor(5,"Messi",0,new CuentaBancaria(18123,rd.nextInt(8000)+2000),"Norman","Lol","123",19));
-        
-        usuarios.get(4).getVenta();
-        initComponents();
+    public LogIn(){
+        try {
+            usuarios.add(new Administrador("Francisco","fagarcia","123",19));
+            
+            usuarios.add(new Comprador(rd.nextInt(700)+100, new CuentaBancaria(12345,rd.nextInt(8000)+2000),"Zelda","James","james1","123",19));
+            usuarios.add(new Comprador(rd.nextInt(700)+100, new CuentaBancaria(12222,rd.nextInt(8000)+2000),"Hulk","Ashley","bubblebob","123",19));
+            
+            usuarios.add(new Vendedor(5,"Arcane",0,new CuentaBancaria(12390,rd.nextInt(8000)+2000),"Pino","Roble","123",19));
+            usuarios.add(new Vendedor(5,"Messi",0,new CuentaBancaria(18123,rd.nextInt(8000)+2000),"Norman","Lol","123",19));
+            
+            initComponents();
+        } catch (Exception ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -28,8 +37,8 @@ public class LogIn extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        tf_usuario = new javax.swing.JTextField();
+        tf_contraseña = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
@@ -39,6 +48,11 @@ public class LogIn extends javax.swing.JFrame {
         jLabel1.setText("LogIn");
 
         jButton1.setText("Ingresar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Registrarse");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -69,8 +83,8 @@ public class LogIn extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(jPasswordField1)
-                    .addComponent(jTextField2)
+                    .addComponent(tf_contraseña)
+                    .addComponent(tf_usuario)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
@@ -85,11 +99,11 @@ public class LogIn extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tf_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tf_contraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -106,7 +120,34 @@ public class LogIn extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         r.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String contraseña = tf_contraseña.getText();
+        String usuario = tf_usuario.getText();
+        
+        for (Usuario u : usuarios) {
+            String user = u.getUsuario(), c = u.getContraseña();
+            if(u instanceof Administrador){                
+                if(user.equals(usuario) && c.equals(contraseña)){
+                    a.setVisible(true);
+                    this.setVisible(false);
+                }
+            }else if(u instanceof Comprador){
+                if(user.equals(usuario) && c.equals(contraseña)){
+                    s.setVisible(true);
+                    this.setVisible(false);
+                }
+            }else if(u instanceof Vendedor){
+                if(user.equals(usuario) && c.equals(contraseña)){
+                    cos.setVisible(true);
+                    this.setVisible(false);
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -135,7 +176,11 @@ public class LogIn extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LogIn().setVisible(true);
+                try {
+                    new LogIn().setVisible(true);
+                } catch (Exception ex) {
+                    
+                }
             }
         });
     }
@@ -146,8 +191,8 @@ public class LogIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JPasswordField tf_contraseña;
+    private javax.swing.JTextField tf_usuario;
     // End of variables declaration//GEN-END:variables
     ArrayList <Usuario> usuarios = new ArrayList();
 }

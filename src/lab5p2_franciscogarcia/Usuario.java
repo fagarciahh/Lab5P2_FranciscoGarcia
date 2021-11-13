@@ -45,11 +45,13 @@ public class Usuario {
         return edad;
     }
 
-    public void setEdad(int edad) throws Exception{
-        if(edad < 1){
-            throw new Exception("Edad no valida");
-        }
+    public void setEdad(int edad){
         this.edad = edad;
+    }
+
+    @Override
+    public String toString() {
+        return  nombre ;
     }
     
     

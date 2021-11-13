@@ -1,10 +1,15 @@
 package lab5p2_franciscogarcia;
 
 import java.util.Random;
+import static lab5p2_franciscogarcia.LogIn.rd;
 
 public class Registro extends javax.swing.JFrame {
     
     public static LogIn l = new LogIn();
+    public static Random rd = new Random();
+    public static Admin a = new Admin();
+    public static Seller s = new Seller();
+    public static Costumer cos = new Costumer();
 
     public Registro() {
         initComponents();
@@ -178,29 +183,41 @@ public class Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_tf_cuentaActionPerformed
 
     private void RegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RegistroMouseClicked
-        
+
         int codigo, edad;
         String nombre, usuario, contraseña, pFavorito;
-        
-        try{
+
+        try {
             nombre = tf_nombre.getText();
             usuario = tf_usuario.getText();
             contraseña = tf_contraseña.getText();
             edad = Integer.parseInt(tf_edad.getText());
             codigo = Integer.parseInt(tf_cuenta.getText());
             pFavorito = tf_favorito.getText();
-            
-            if(B1.isSelected()){
-                Usuario nuevo = new Administrador(nombre,usuario,contraseña,edad);
-                
-            }else if(B2.isSelected()){
-                
+
+            if (B1.isSelected()) {
+                Usuario nuevo = new Administrador(nombre, usuario, contraseña, edad);
+                l.usuarios.add(nuevo);
+                a.setVisible(true);
+                this.setVisible(false);
+            } else if (B2.isSelected()) {
+                Usuario nuevo = new Vendedor(5,pFavorito,0,new CuentaBancaria(codigo,rd.nextInt(8000)+2000),nombre, 
+                        usuario,contraseña,edad);
+                l.usuarios.add(nuevo);
+                s.setVisible(true);
+                this.setVisible(false);
+            } else if (B3.isSelected()){
+                Usuario nuevo = new Comprador(rd.nextInt(700)+100, new CuentaBancaria(codigo,rd.nextInt(8000)+2000),
+                        pFavorito, nombre, usuario,contraseña, edad);
+                l.usuarios.add(nuevo);
+                cos.setVisible(true);
+                this.setVisible(false);
             }
-            
-        }catch(Exception e){
-            
+
+        } catch (Exception e) {
+
         }
-        
+
     }//GEN-LAST:event_RegistroMouseClicked
 
     private void tf_contraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_contraseñaActionPerformed
